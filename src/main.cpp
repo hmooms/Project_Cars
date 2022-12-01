@@ -116,4 +116,16 @@ void turnRight()
 
 void loop()
 {
+  turnRight();
+  delay(2000);
+  turnLeft();
+  delay(2000);
+  moveRight();
+  delay(2000);
+  moveLeft();
+  delay(2000);
+  moveForward();
+  delay(2000);
+  moveBackward();
+  delay(2000);
 }
