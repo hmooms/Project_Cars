@@ -1,17 +1,24 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
+#include <Arduino.h>
 
 #include "../lib/Analog.h"
 #include "../lib/MotorDriver.h"
 
 #include <WiFi.h>
 
-const int trigPin = 21;
-const int echoPin = 27;
-long duration;
-float distanceCm;
 #define SOUND_SPEED 0.034
 #define CM_TO_INCH 0.393701
+
+const int trigPin = 21;
+const int echoFront = 34;
+const int echoBack = 35;
+const int echoRight = 14;
+const int echoLeft = 12;
+const int leftFrontIR = 36;
+const int rightFrontIR = 39;
+const int rightBackIR = 5;
+const int leftBackIR = 27;
 
 // Motor B linksvoor
 const int linksVoor1 = 32;   // Pin
@@ -33,7 +40,11 @@ const int rechtsAchter1 = 18;   // Pin
 const int rechtsAchter2 = 19;   // Pin
 const int rechtsAchterPWM = 17; // Pin
 
-float distanceDetection()
+long duration;
+float distanceCm;
+int state = 1;
+
+float distanceDetection(int pin)
 {
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
@@ -42,12 +53,10 @@ float distanceDetection()
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
+  duration = pulseIn(pin, HIGH);
   float distanceCm = duration * SOUND_SPEED / 2;
   return distanceCm;
 }
-
-float baseHeight;
 
 void setup()
 {
@@ -65,10 +74,10 @@ void setup()
   pinMode(rechtsAchter2, OUTPUT);
   pinMode(rechtsAchterPWM, OUTPUT);
   pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-
-  baseHeight = distanceDetection();
-
+  pinMode(echoFront, INPUT);
+  pinMode(echoBack, INPUT);
+  pinMode(leftFrontIR, INPUT);
+  pinMode(rightFrontIR, INPUT);
   Serial.begin(9600);
 }
 void stop()
@@ -99,10 +108,10 @@ void moveForward(int x)
     digitalWrite(rechtsVoor2, LOW);
     digitalWrite(rechtsAchter2, HIGH);
     digitalWrite(rechtsAchter1, LOW);
-    analogWrite(linksVoorPWM, 120);
-    analogWrite(linksAchterPWM, 120);
-    analogWrite(rechtsVoorPWM, 120);
-    analogWrite(rechtsAchterPWM, 120);
+    analogWrite(linksVoorPWM, 250);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 250);
   }
   else
   {
@@ -117,14 +126,13 @@ void moveForward(int x)
       digitalWrite(rechtsVoor2, LOW);
       digitalWrite(rechtsAchter2, HIGH);
       digitalWrite(rechtsAchter1, LOW);
-      analogWrite(linksVoorPWM, 120);
-      analogWrite(linksAchterPWM, 120);
-      analogWrite(rechtsVoorPWM, 120);
-      analogWrite(rechtsAchterPWM, 120);
+      analogWrite(linksVoorPWM, 250);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 250);
     }
   }
 }
-
 void moveBackward(int x)
 {
   if (x == 0)
@@ -162,7 +170,6 @@ void moveBackward(int x)
     }
   }
 }
-
 void moveDiagonalRight(int x)
 {
   if (x == 0)
@@ -200,42 +207,267 @@ void moveDiagonalRight(int x)
     }
   }
 }
+void moveDiagonalLeft(int x)
+{
+  if (x == 0)
+  {
+    digitalWrite(linksVoor1, LOW);
+    digitalWrite(linksVoor2, LOW);
+    digitalWrite(linksAchter2, HIGH);
+    digitalWrite(linksAchter1, LOW);
+    digitalWrite(rechtsVoor1, HIGH);
+    digitalWrite(rechtsVoor2, LOW);
+    digitalWrite(rechtsAchter2, LOW);
+    digitalWrite(rechtsAchter1, LOW);
+    analogWrite(linksVoorPWM, 0);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 0);
+  }
+  else
+  {
+    static unsigned long startTime = millis();
+    if (millis() - startTime < x)
+    {
+      digitalWrite(linksVoor1, LOW);
+      digitalWrite(linksVoor2, LOW);
+      digitalWrite(linksAchter2, HIGH);
+      digitalWrite(linksAchter1, LOW);
+      digitalWrite(rechtsVoor1, HIGH);
+      digitalWrite(rechtsVoor2, LOW);
+      digitalWrite(rechtsAchter2, LOW);
+      digitalWrite(rechtsAchter1, LOW);
+      analogWrite(linksVoorPWM, 0);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 0);
+    }
+  }
+}
+void moveLeft(int x)
+{
+  if (x == 0)
+  {
+    digitalWrite(rechtsVoor1, HIGH);
+    digitalWrite(rechtsVoor2, LOW);
+    digitalWrite(linksVoor1, LOW);
+    digitalWrite(linksVoor2, HIGH);
+    digitalWrite(linksAchter2, HIGH);
+    digitalWrite(linksAchter1, LOW);
+    digitalWrite(rechtsAchter2, LOW);
+    digitalWrite(rechtsAchter1, HIGH);
+    analogWrite(linksVoorPWM, 250);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 250);
+  }
+  else
+  {
+    static unsigned long startTime = millis();
+    if (millis() - startTime < x)
+    {
+      digitalWrite(rechtsVoor1, HIGH);
+      digitalWrite(rechtsVoor2, LOW);
+      digitalWrite(linksVoor1, LOW);
+      digitalWrite(linksVoor2, HIGH);
+      digitalWrite(linksAchter2, HIGH);
+      digitalWrite(linksAchter1, LOW);
+      digitalWrite(rechtsAchter2, LOW);
+      digitalWrite(rechtsAchter1, HIGH);
+      analogWrite(linksVoorPWM, 250);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 250);
+    }
+  }
+}
+void moveRight(int x)
+{
+  if (x == 0)
+  {
+    digitalWrite(rechtsVoor1, LOW);
+    digitalWrite(rechtsVoor2, HIGH);
+    digitalWrite(linksVoor1, HIGH);
+    digitalWrite(linksVoor2, LOW);
+    digitalWrite(linksAchter2, LOW);
+    digitalWrite(linksAchter1, HIGH);
+    digitalWrite(rechtsAchter2, HIGH);
+    digitalWrite(rechtsAchter1, LOW);
+    analogWrite(linksVoorPWM, 250);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 250);
+  }
+  else
+  {
+    static unsigned long startTime = millis();
+    if (millis() - startTime < x)
+    {
+      digitalWrite(rechtsVoor1, LOW);
+      digitalWrite(rechtsVoor2, HIGH);
+      digitalWrite(linksVoor1, HIGH);
+      digitalWrite(linksVoor2, LOW);
+      digitalWrite(linksAchter2, LOW);
+      digitalWrite(linksAchter1, HIGH);
+      digitalWrite(rechtsAchter2, HIGH);
+      digitalWrite(rechtsAchter1, LOW);
+      analogWrite(linksVoorPWM, 250);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 250);
+    }
+  }
+}
+void turnLeft(int x)
+{
+  if (x == 0)
+  {
+    digitalWrite(rechtsVoor1, HIGH);
+    digitalWrite(rechtsVoor2, LOW);
+    digitalWrite(linksVoor1, LOW);
+    digitalWrite(linksVoor2, HIGH);
+    digitalWrite(linksAchter2, LOW);
+    digitalWrite(linksAchter1, HIGH);
+    digitalWrite(rechtsAchter2, HIGH);
+    digitalWrite(rechtsAchter1, LOW);
+    analogWrite(linksVoorPWM, 250);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 250);
+  }
+  else
+  {
+    static unsigned long startTime = millis();
+    if (millis() - startTime < x)
+    {
+      digitalWrite(rechtsVoor1, HIGH);
+      digitalWrite(rechtsVoor2, LOW);
+      digitalWrite(linksVoor1, LOW);
+      digitalWrite(linksVoor2, HIGH);
+      digitalWrite(linksAchter2, LOW);
+      digitalWrite(linksAchter1, HIGH);
+      digitalWrite(rechtsAchter2, HIGH);
+      digitalWrite(rechtsAchter1, LOW);
+      analogWrite(linksVoorPWM, 250);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 250);
+    }
+  }
+}
+void turnRight(int x)
+{
+  if (x == 0)
+  {
+    digitalWrite(rechtsVoor1, LOW);
+    digitalWrite(rechtsVoor2, HIGH);
+    digitalWrite(linksVoor1, HIGH);
+    digitalWrite(linksVoor2, LOW);
+    digitalWrite(linksAchter2, HIGH);
+    digitalWrite(linksAchter1, LOW);
+    digitalWrite(rechtsAchter2, LOW);
+    digitalWrite(rechtsAchter1, HIGH);
+    analogWrite(linksVoorPWM, 250);
+    analogWrite(linksAchterPWM, 250);
+    analogWrite(rechtsVoorPWM, 250);
+    analogWrite(rechtsAchterPWM, 250);
+  }
+  else
+  {
+    static unsigned long startTime = millis();
+    if (millis() - startTime < x)
+    {
+      digitalWrite(rechtsVoor1, LOW);
+      digitalWrite(rechtsVoor2, HIGH);
+      digitalWrite(linksVoor1, HIGH);
+      digitalWrite(linksVoor2, LOW);
+      digitalWrite(linksAchter2, HIGH);
+      digitalWrite(linksAchter1, LOW);
+      digitalWrite(rechtsAchter2, LOW);
+      digitalWrite(rechtsAchter1, HIGH);
+      analogWrite(linksVoorPWM, 250);
+      analogWrite(linksAchterPWM, 250);
+      analogWrite(rechtsVoorPWM, 250);
+      analogWrite(rechtsAchterPWM, 250);
+    }
+  }
+}
 
-int state = 1;
+void hugRightLine()
+{
+  while (digitalRead(rightFrontIR) && digitalRead(rightBackIR))
+  {
+    moveRight(0);
+  }
+  while (!digitalRead(rightFrontIR) && digitalRead(rightBackIR))
+  {
+    turnLeft(0);
+  }
+  while (digitalRead(rightFrontIR) && !digitalRead(rightBackIR))
+  {
+    turnRight(0);
+  }
+  stop();
+}
+
+void hugLeftLine()
+{
+  while (digitalRead(leftBackIR) && digitalRead(leftFrontIR))
+  {
+    moveLeft(0);
+  }
+  while (!digitalRead(leftBackIR) && digitalRead(leftFrontIR))
+  {
+    turnLeft(0);
+  }
+  while (digitalRead(leftBackIR) && !digitalRead(leftFrontIR))
+  {
+    turnRight(0);
+  }
+}
+
+void spaceWalk()
+{
+}
 
 void loop()
 {
-  static unsigned long startTimee = millis();
   switch (state)
   {
-  case 0:
+
+  case 0: // Backward
     moveBackward(0);
-    if (millis() - startTimee > 3000)
-    {
-      startTimee = millis();
-      state = -1;
-    }
     break;
-  case 1:
+
+  case 1: // Forward
     moveForward(0);
-    // if (distanceDetection() > baseHeight + 5)
-    // {
-    //   startTimee = millis();
-    //   state = 0;
-    // }
-    if (distanceDetection() < 15)
-    {
-      state = 2;
-    }
     break;
-  case 2:
+
+  case 2: // Diagonal right
     moveDiagonalRight(0);
-    if (millis() - startTimee > 2000)
-    {
-      startTimee = millis();
-      state = 1;
-    }
-  default:
+    break;
+
+  case 3: // Diagonal left
+    moveDiagonalLeft(0);
+    break;
+
+  case 4: // Left
+    moveLeft(0);
+    break;
+
+  case 5: // Right
+    moveRight(0);
+    break;
+
+  case 6: // Turn left
+    turnLeft(0);
+    break;
+
+  case 7: // Turn right
+    turnRight(0);
+    break;
+
+  default: // Stop
     stop();
   }
 }
