@@ -147,14 +147,14 @@ public:
      * - dir:       motor position relative to verhicle
      * - inverse:   true if motor is mounted backwards (optional)
      */
-    static void defineMotor(int in1, int in2, int en, direction pos, bool inverse = false)
+    static void defineMotor(int in1, int in2, int en, direction pos)
     {
         pinMode(in1, OUTPUT);
         pinMode(in2, OUTPUT);
         Analog::write(en, 0);
 
-        motors.push_back({in1 = (inverse) ? in2 : in1,
-                          in2 = (inverse) ? in1 : in2,
+        motors.push_back({in1 = in1,
+                          in2 = in2,
                           en = en,
                           pos = pos});
     }
