@@ -15,16 +15,19 @@
 
 // Motor Pins
 int motorPins[][3] = {
-    {32, 33, 16}, // linksvoor
-    {25, 26, 15}, // linksachter
-    {23, 22, 4},  // rechtsvoor
-    {19, 18, 17}  // rechtsachter
+    {32, 33, 16}, // left front
+    {25, 26, 15}, // left rear
+    {23, 22, 4},  // right front
+    {19, 18, 17}  // right rear
 };
 
 long duration;
 float distanceCm;
-int state = 1;
-
+unsigned long leftFrontIRTriggeredTime = 0;
+unsigned long rightFrontIRTriggeredTime = 0;
+int leftFrontIRCounter = 0;
+int rightFrontIRCounter = 0;
+const unsigned long triggerInterval = 5000; // 5 seconds in milliseconds
 unsigned long lastSensorStatusChangeTime = 0;
 
 float distanceDetection()
@@ -37,6 +40,40 @@ float distanceDetection()
   duration = pulseIn(USEcho, HIGH);
   float distanceCm = duration * SOUND_SPEED / 2;
   return distanceCm;
+}
+
+bool isStuckInCorner()
+{
+  unsigned long currentTime = millis();
+
+  if (digitalRead(leftFrontIR))
+  {
+    if (currentTime - leftFrontIRTriggeredTime > triggerInterval)
+    {
+      leftFrontIRCounter = 0;
+    }
+    leftFrontIRTriggeredTime = currentTime;
+    leftFrontIRCounter++;
+  }
+
+  if (digitalRead(rightFrontIR))
+  {
+    if (currentTime - rightFrontIRTriggeredTime > triggerInterval)
+    {
+      rightFrontIRCounter = 0;
+    }
+    rightFrontIRTriggeredTime = currentTime;
+    rightFrontIRCounter++;
+  }
+
+  if (leftFrontIRCounter >= 3 && rightFrontIRCounter >= 3)
+  {
+    // Reset counters to avoid repeated corner detection
+    leftFrontIRCounter = 0;
+    rightFrontIRCounter = 0;
+    return true;
+  }
+  return false;
 }
 
 void setup()
@@ -73,7 +110,7 @@ void move(int mode, int time)
   {
     digitalWrite(motorPins[i][0], mode & (1 << i) ? HIGH : LOW);
     digitalWrite(motorPins[i][1], mode & (1 << i) ? LOW : HIGH);
-    analogWrite(motorPins[i][2], 125);
+    analogWrite(motorPins[i][2], 150);
   }
 }
 
@@ -83,6 +120,7 @@ void moveLeft(int time) { move(0b0011, time); }
 void moveRight(int time) { move(0b1100, time); }
 void turnLeft(int time) { move(0b1001, time); }
 void turnRight(int time) { move(0b0110, time); }
+void rampCalibration(int time) { move(0b1101, time); }
 
 void stop()
 {
@@ -96,47 +134,78 @@ void stop()
   }
 }
 
+void handleObstacle()
+{
+  if (isStuckInCorner())
+  {
+    stop();
+    moveBackward(1000);
+    turnLeft(1000);
+  }
+  else
+  {
+    if (digitalRead(rightFrontIR))
+    {
+      moveBackward(0);
+      delay(500);
+      turnLeft(0);
+      delay(200);
+      digitalWrite(sensorStatusPin, HIGH);
+    }
+    if (digitalRead(leftFrontIR))
+    {
+      moveBackward(0);
+      delay(500);
+      turnRight(0);
+      delay(200);
+      digitalWrite(sensorStatusPin, HIGH);
+    }
+    if (digitalRead(rightBackIR))
+    {
+      moveForward(0);
+      delay(500);
+      digitalWrite(sensorStatusPin, HIGH);
+    }
+    if (digitalRead(leftBackIR))
+    {
+      moveForward(0);
+      delay(500);
+      digitalWrite(sensorStatusPin, HIGH);
+    }
+    if (distanceDetection() <= 10)
+    {
+      Serial.println(distanceDetection());
+      moveRight(0);
+      delay(500);
+    }
+    // if (distanceDetection() <= 10 && digitalRead(rightBackIR))
+    // {
+    //   while (!digitalRead(rightFrontIR))
+    //   {
+    //     rampCalibration(0);
+    //   }
+    //   if (distanceDetection() <= 10 && (digitalRead(rightFrontIR) && digitalRead(rightBackIR)))
+    //   {
+    //     moveLeft(0);
+    //     delay(300);
+    //     moveForward(0);
+    //     delay(2000);
+    //   }
+    // }
+  }
+}
+
 void loop()
 {
   float distance = distanceDetection();
+  bool ACMStatus = digitalRead(ACMStatusPin);
+  digitalWrite(sensorStatusPin, ACMStatus ? HIGH : LOW);
 
-  if (digitalRead(ACMStatusPin))
+  if (ACMStatus)
   {
-    digitalWrite(sensorStatusPin, HIGH);
-    if (digitalRead(rightFrontIR))
+    if (digitalRead(rightFrontIR) || digitalRead(leftFrontIR) || digitalRead(rightBackIR) || digitalRead(leftBackIR) || (distance <= 20.0 && distance > 2.0))
     {
-      stop();
-      turnLeft(0);
-      delay(500);
-      digitalWrite(sensorStatusPin, HIGH);
-    }
-    else if (digitalRead(leftFrontIR))
-    {
-      stop();
-      turnRight(0);
-      delay(500);
-      digitalWrite(sensorStatusPin, HIGH);
-    }
-    else if (digitalRead(rightBackIR))
-    {
-      stop();
-      turnLeft(0);
-      delay(500);
-      digitalWrite(sensorStatusPin, HIGH);
-    }
-    else if (digitalRead(leftBackIR))
-    {
-      stop();
-      turnRight(0);
-      delay(500);
-      digitalWrite(sensorStatusPin, HIGH);
-    }
-    else if (distance <= 20)
-    {
-      stop();
-      turnLeft(0);
-      delay(500);
-      digitalWrite(sensorStatusPin, HIGH);
+      handleObstacle();
     }
     else
     {
