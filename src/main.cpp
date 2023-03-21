@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <ESPAsyncWebServer.h>
 #include "../lib/server.cpp"
 
 #define leftFrontIR 36
@@ -24,7 +25,6 @@ long duration;
 float distanceCm;
 int state = 1;
 
-// String sensorStatus = "off";
 unsigned long lastSensorStatusChangeTime = 0;
 
 float distanceDetection()
@@ -98,12 +98,11 @@ void stop()
 
 void loop()
 {
-  checkForClients();
   float distance = distanceDetection();
 
-  if (ACMStatusPinState == "on")
+  if (digitalRead(ACMStatusPin))
   {
-    digitalWrite(ACMStatusPin, HIGH);
+    digitalWrite(sensorStatusPin, HIGH);
     if (digitalRead(rightFrontIR))
     {
       stop();
@@ -111,59 +110,43 @@ void loop()
       delay(500);
       digitalWrite(sensorStatusPin, HIGH);
     }
-    if (digitalRead(leftFrontIR))
+    else if (digitalRead(leftFrontIR))
     {
       stop();
       turnRight(0);
       delay(500);
       digitalWrite(sensorStatusPin, HIGH);
     }
-    if (digitalRead(leftBackIR) && digitalRead(rightBackIR))
+    else if (digitalRead(rightBackIR))
     {
-      // sensorStatus = "IR";
-      moveForward(0);
+      stop();
+      turnLeft(0);
+      delay(500);
       digitalWrite(sensorStatusPin, HIGH);
     }
-    else if (distance < 20)
+    else if (digitalRead(leftBackIR))
     {
-      // sensorStatus = "US";
       stop();
+      turnRight(0);
+      delay(500);
       digitalWrite(sensorStatusPin, HIGH);
-      static unsigned long prevTime = 0;
-      static bool state = false;
-      unsigned long currTime = millis();
-      if (currTime - prevTime >= 500)
-      {
-        digitalWrite(sensorStatusPin, state ? LOW : HIGH);
-        state = !state;
-        prevTime = currTime;
-      }
-      if (distance < 5)
-      {
-        // sensorStatus = "alert";
-        stop();
-        digitalWrite(sensorStatusPin, HIGH);
-        static unsigned long prevTime = 0;
-        static bool state = false;
-        unsigned long currTime = millis();
-        if (currTime - prevTime >= 250)
-        {
-          digitalWrite(sensorStatusPin, state ? LOW : HIGH);
-          state = !state;
-          prevTime = currTime;
-        }
-      }
+    }
+    else if (distance <= 20)
+    {
+      stop();
+      turnLeft(0);
+      delay(500);
+      digitalWrite(sensorStatusPin, HIGH);
     }
     else
     {
-      // sensorStatus = "off";
-      digitalWrite(sensorStatusPin, LOW);
       moveForward(0);
+      digitalWrite(sensorStatusPin, LOW);
     }
   }
   else
   {
     stop();
-    digitalWrite(ACMStatusPin, LOW);
+    digitalWrite(sensorStatusPin, LOW);
   }
 }
