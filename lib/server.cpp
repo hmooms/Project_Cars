@@ -1,5 +1,5 @@
-const char *ssid = "Hugo's Galaxy A52s 5G";
-const char *password = "blpv8004";
+const char *ssid = "cozy";
+const char *password = "alenalen";
 const int ACMStatusPin = 14;
 
 AsyncWebServer server(80);
@@ -54,8 +54,17 @@ void setupServer()
     html += digitalRead(ACMStatusPin) ? "ON" : "OFF";
     html += "</p>";
 
-    html += "<p><a href=\"/ACMStatusPin/on\"><button class=\"button\">ON</button></a></p>";
-    html += "<p><a href=\"/ACMStatusPin/off\"><button class=\"button button2\">OFF</button></a></p>";
+    html += "<p><button id=\"onButton\" class=\"button\">ON</button></p>";
+    html += "<p><button id=\"offButton\" class=\"button button2\">OFF</button></p>";
+    html += "<script>";
+    html += "document.getElementById('onButton').addEventListener('click', function() {";
+    html += "fetch('/ACMStatusPin/on');";
+    html += "});";
+    html += "document.getElementById('offButton').addEventListener('click', function() {";
+    html += "fetch('/ACMStatusPin/off');";
+    html += "});";
+    html += "</script>";
+
     html += "</body></html>";
 
     request->send(200, "text/html", html); });
