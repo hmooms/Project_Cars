@@ -7,9 +7,10 @@
 #define rightFrontIR 39
 #define rightBackIR 5
 #define leftBackIR 27
-#define trigPin 21
+#define trigPinForward 21
+#define trigPinDown 13
 #define echoForward 34
-#define echoDown 13
+#define echoDown 35
 
 #define sensorStatusPin 12
 #define SOUND_SPEED 0.034
@@ -33,6 +34,7 @@ unsigned long lastSensorStatusChangeTime = 0;
 
 float distanceDetection(uint8_t pin)
 {
+  byte trigPin = (pin == echoForward) ? trigPinForward : trigPinDown;
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
@@ -94,7 +96,8 @@ void setup()
   pinMode(rightFrontIR, INPUT);
   pinMode(rightBackIR, INPUT);
   pinMode(leftBackIR, INPUT);
-  pinMode(trigPin, OUTPUT);
+  pinMode(trigPinForward, OUTPUT);
+  pinMode(trigPinDown, OUTPUT);
   pinMode(echoForward, INPUT);
   pinMode(echoDown, INPUT);
   uint8_t setupHeight = distanceDetection(echoDown);

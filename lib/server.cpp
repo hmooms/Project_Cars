@@ -1,6 +1,7 @@
-const char *ssid = "cozy";
-const char *password = "alenalen";
+const char *ssid = "Tesla IoT";
+const char *password = "fsL6HgjN";
 const int ACMStatusPin = 14;
+bool ACMStatus = false;
 
 AsyncWebServer server(80);
 
@@ -29,12 +30,16 @@ void setupServer()
     server.on("/ACMStatusPin/on", HTTP_GET, [](AsyncWebServerRequest *request)
               {
     digitalWrite(ACMStatusPin, HIGH);
+    ACMStatus = true;
+
     request->send(200, "text/plain", "ACMStatusPin turned ON"); });
 
     // Route for handling the GET request to turn ACMStatusPin OFF
     server.on("/ACMStatusPin/off", HTTP_GET, [](AsyncWebServerRequest *request)
               {
     digitalWrite(ACMStatusPin, LOW);
+    ACMStatus =false;
+
     request->send(200, "text/plain", "ACMStatusPin turned OFF"); });
 
     // Route for handling the root GET request
