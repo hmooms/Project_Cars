@@ -1,8 +1,10 @@
+// Include necessary libraries
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include "../lib/server.cpp"
 
+// Define pins for various sensors and actuators
 #define leftFrontIR 36
 #define rightFrontIR 39
 #define rightBackIR 2
@@ -17,7 +19,7 @@
 #define sensorStatusPin 12
 #define SOUND_SPEED 0.034
 
-// Motor Pins
+// Motor Pins configuration
 int motorPins[][3] = {
     {32, 33, 16}, // left front
     {25, 26, 15}, // left rear
@@ -25,6 +27,7 @@ int motorPins[][3] = {
     {19, 18, 17}  // right rear
 };
 
+// Variables for measuring time intervals, distances and keeping track of states
 long duration;
 float distanceCm;
 unsigned long leftFrontIRTriggeredTime = 0;
@@ -34,8 +37,10 @@ int rightFrontIRCounter = 0;
 const unsigned long triggerInterval = 5000; // 5 seconds in milliseconds
 unsigned long lastSensorStatusChangeTime = 0;
 
+// Function to stop the robot
 void stop();
 
+// Function to calculate distance using ultrasonic sensor
 float distanceDetection(uint8_t pin)
 {
   byte trigPin = (pin == echoForward) ? trigPinForward : trigPinDown;
@@ -49,6 +54,7 @@ float distanceDetection(uint8_t pin)
   return distanceCm;
 }
 
+// Function to check if the robot is stuck in a corner
 bool isStuckInCorner()
 {
   unsigned long currentTime = millis();
@@ -83,10 +89,14 @@ bool isStuckInCorner()
   return false;
 }
 
+// Main setup function
 void setup()
 {
+  // Initialize Serial communication
   Serial.begin(9600);
   static unsigned long startTimer = millis();
+
+  // Set pin modes for all sensors and actuators
   pinMode(ACMStatusPin, OUTPUT);
   pinMode(sensorStatusPin, OUTPUT);
   for (int i = 0; i < 4; ++i)
@@ -104,31 +114,18 @@ void setup()
   pinMode(trigPinDown, OUTPUT);
   pinMode(echoForward, INPUT);
   pinMode(echoDown, INPUT);
+
+  // Set up base height
   uint8_t setupHeight = distanceDetection(echoDown);
+
+  // Set up the server
   setupServer(leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor);
 }
 
+// Function to move the robot in a specific mode for a specific time
 void move(int mode, int time)
 {
-  // static unsigned long previousMillis = 0;
-  // static bool isMoving = false;
-
-  // if (time != 0 && !isMoving)
-  // {
-  //   previousMillis = millis();
-  //   isMoving = true;
-  // }
-
-  // if (time != 0 && isMoving && millis() - previousMillis >= time)
-  // {
-  //   stop();
-  //   isMoving = false;
-  //   return;
-  // }
-
-  // if (isMoving || (!isMoving && time == 0))
-  // {
-
+  // Set motor directions and speeds according to mode
   for (int i = 0; i < 4; ++i)
   {
     digitalWrite(motorPins[i][0], mode & (1 << i) ? HIGH : LOW);
@@ -136,14 +133,14 @@ void move(int mode, int time)
     analogWrite(motorPins[i][2], (mode == 0b1010) ? 170 : 200);
   }
 
-  // }
-
+  // Delay for the specified time (if any)
   if (time != 0)
   {
     delay(time);
   }
 }
 
+// Movement functions for the robot
 void moveForward(int time) { move(0b1010, time); }
 void moveBackward(int time) { move(0b0101, time); }
 void moveLeft(int time) { move(0b0011, time); }
@@ -152,6 +149,7 @@ void turnLeft(int time) { move(0b1001, time); }
 void turnRight(int time) { move(0b0110, time); }
 void rampCalibration(int time) { move(0b1101, time); }
 
+// Function to stop the robot
 void stop()
 {
   for (int i = 0; i < 4; ++i)
@@ -164,11 +162,13 @@ void stop()
   }
 }
 
+// Function to handle obstacles and adjust robot's movement accordingly
 void handleObstacle()
 {
   float distanceFront = distanceDetection(echoForward);
   float distanceDown = distanceDetection(echoDown);
   digitalWrite(sensorStatusPin, HIGH);
+  // Check for corner and react accordingly
   if (isStuckInCorner())
   {
     stop();
@@ -177,6 +177,7 @@ void handleObstacle()
   }
   else
   {
+    // React to different sensor inputs and adjust movement
     if (distanceDown >= (5 + HEIGHT))
     {
       moveBackward(500);
@@ -227,20 +228,26 @@ void handleObstacle()
   }
 }
 
+// Main loop function
 void loop()
 {
   ACMStatus = digitalRead(ACMStatusPin);
+
+  // Check if the robot is allowed to move based on the magnetic sensor
   if (digitalRead(magSensor))
   {
     ACMStatus = false;
     digitalWrite(ACMStatusPin, LOW);
   }
+
+  // If ACMStatus is true, handle obstacles and move accordingly
   if (ACMStatus)
   {
     handleObstacle();
   }
   else
   {
+    // If ACMStatus is false, stop the robot and turn off the sensor status LED
     stop();
     digitalWrite(sensorStatusPin, LOW);
   }
