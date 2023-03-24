@@ -105,7 +105,7 @@ void setup()
   pinMode(echoForward, INPUT);
   pinMode(echoDown, INPUT);
   uint8_t setupHeight = distanceDetection(echoDown);
-  setupServer();
+  setupServer(leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor, ACMStatus);
 }
 
 void move(int mode, int time)
@@ -234,7 +234,8 @@ void handleObstacle()
 
 void loop()
 {
-  if (!digitalRead(magSensor))
+  digitalWrite(ACMStatusPin, ACMStatus ? HIGH : LOW);
+  if (digitalRead(magSensor))
   {
     ACMStatus = false;
   }
