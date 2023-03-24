@@ -38,7 +38,7 @@ void setupServer()
     server.on("/ACMStatusPin/off", HTTP_GET, [](AsyncWebServerRequest *request)
               {
     digitalWrite(ACMStatusPin, LOW);
-    ACMStatus =false;
+    ACMStatus = false;
 
     request->send(200, "text/plain", "ACMStatusPin turned OFF"); });
 

@@ -5,12 +5,13 @@
 
 #define leftFrontIR 36
 #define rightFrontIR 39
-#define rightBackIR 5
+#define rightBackIR 2
 #define leftBackIR 27
 #define trigPinForward 13
 #define trigPinDown 21
 #define echoForward 34
 #define echoDown 35
+#define magSensor 5
 
 #define HEIGHT 2.63
 #define sensorStatusPin 12
@@ -132,7 +133,7 @@ void move(int mode, int time)
   {
     digitalWrite(motorPins[i][0], mode & (1 << i) ? HIGH : LOW);
     digitalWrite(motorPins[i][1], mode & (1 << i) ? LOW : HIGH);
-    analogWrite(motorPins[i][2], (mode == 0b1010) ? 120 : 200);
+    analogWrite(motorPins[i][2], (mode == 0b1010) ? 170 : 200);
   }
 
   // }
@@ -183,7 +184,7 @@ void handleObstacle()
     }
     else if (distanceDown > (HEIGHT + 1))
     {
-      moveForward(1000);
+      moveForward(2000);
     }
     else if (digitalRead(rightFrontIR) && digitalRead(leftFrontIR))
     {
@@ -216,10 +217,10 @@ void handleObstacle()
     {
       moveForward(100);
     }
-    else if (distanceFront <= 15 && distanceFront >= 10)
+    else if (distanceFront <= 15 && distanceFront >= 5)
     {
-      Serial.println("FRONT!");
-      moveRight(500);
+      // Serial.println("FRONT!");
+      moveLeft(500);
     }
 
     else
@@ -233,7 +234,10 @@ void handleObstacle()
 
 void loop()
 {
-  bool ACMStatus = digitalRead(ACMStatusPin);
+  if (!digitalRead(magSensor))
+  {
+    ACMStatus = false;
+  }
   if (ACMStatus)
   {
     handleObstacle();
