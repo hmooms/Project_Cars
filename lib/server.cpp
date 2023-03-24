@@ -10,7 +10,7 @@ void notFound(AsyncWebServerRequest *request)
     request->send(404, "text/plain", "Not found");
 }
 
-void setupServer(int leftFrontIR, int rightFrontIR, int leftBackIR, int rightBackIR, int magSensor, bool ACMStatus)
+void setupServer(int leftFrontIR, int rightFrontIR, int leftBackIR, int rightBackIR, int magSensor)
 {
     // Connect to Wi-Fi network with SSID and password
     Serial.print("Connecting to ");
@@ -27,14 +27,13 @@ void setupServer(int leftFrontIR, int rightFrontIR, int leftBackIR, int rightBac
     Serial.println(WiFi.localIP());
 
     // Route for handling the GET request to retrieve sensor values
-    server.on("/sensorValues", HTTP_GET, [leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor, ACMStatus](AsyncWebServerRequest *request)
+    server.on("/sensorValues", HTTP_GET, [leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor](AsyncWebServerRequest *request)
               {
         String json = "{";
         json += "\"leftFrontIR\":" + String(digitalRead(leftFrontIR)) + ",";
         json += "\"rightFrontIR\":" + String(digitalRead(rightFrontIR)) + ",";
         json += "\"leftBackIR\":" + String(digitalRead(leftBackIR)) + ",";
         json += "\"rightBackIR\":" + String(digitalRead(rightBackIR)) + ",";
-        json += "\"ACMStatus\":" + String(ACMStatus) + ",";
         json += "\"magSensor\":" + String(digitalRead(magSensor));
         json += "}";
         request->send(200, "application/json", json); });
@@ -65,7 +64,6 @@ void setupServer(int leftFrontIR, int rightFrontIR, int leftBackIR, int rightBac
                   html += "<p>Right Front IR: <span id=\"rightFrontIR\"></span></p>";
                   html += "<p>Left Back IR: <span id=\"leftBackIR\"></span></p>";
                   html += "<p>Right Back IR: <span id=\"rightBackIR\"></span></p>";
-                  html += "<p>ACM Status: <span id=\"ACMStatus\"></span></p>";
                   html += "<p>Magnetic Sensor: <span id=\"magSensor\"></span></p>";
 
                   // Add JavaScript code to update sensor values and handle button clicks
@@ -80,10 +78,9 @@ void setupServer(int leftFrontIR, int rightFrontIR, int leftBackIR, int rightBac
                   html += "document.getElementById(\"rightFrontIR\").innerText = json.rightFrontIR;";
                   html += "document.getElementById(\"leftBackIR\").innerText = json.leftBackIR;";
                   html += "document.getElementById(\"rightBackIR\").innerText = json.rightBackIR;";
-                  html += "document.getElementById(\"ACMStatus\").innerText = json.ACMStatus;";
                   html += "document.getElementById(\"magSensor\").innerText = json.magSensor;";
                   html += "}); }";
-                  html += "setInterval(updateSensorValues, 10);</script>";
+                  html += "setInterval(updateSensorValues, 1000);</script>";
 
                   html += "</body></html>";
                   request->send(200, "text/html", html); });

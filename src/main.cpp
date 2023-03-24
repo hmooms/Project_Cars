@@ -105,7 +105,7 @@ void setup()
   pinMode(echoForward, INPUT);
   pinMode(echoDown, INPUT);
   uint8_t setupHeight = distanceDetection(echoDown);
-  setupServer(leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor, ACMStatus);
+  setupServer(leftFrontIR, rightFrontIR, leftBackIR, rightBackIR, magSensor);
 }
 
 void move(int mode, int time)
@@ -209,17 +209,12 @@ void handleObstacle()
       moveBackward(500);
       turnRight(200);
     }
-    else if (digitalRead(rightBackIR))
-    {
-      moveForward(100);
-    }
-    else if (digitalRead(leftBackIR))
+    else if (digitalRead(rightBackIR) || digitalRead(leftBackIR))
     {
       moveForward(100);
     }
     else if (distanceFront <= 15 && distanceFront >= 5)
     {
-      // Serial.println("FRONT!");
       moveLeft(500);
     }
 
@@ -234,10 +229,11 @@ void handleObstacle()
 
 void loop()
 {
-  digitalWrite(ACMStatusPin, ACMStatus ? HIGH : LOW);
+  ACMStatus = digitalRead(ACMStatusPin);
   if (digitalRead(magSensor))
   {
     ACMStatus = false;
+    digitalWrite(ACMStatusPin, LOW);
   }
   if (ACMStatus)
   {
