@@ -221,7 +221,6 @@ void handleObstacle()
 
     else
     {
-      // Serial.println("hello");
       moveForward(0);
       digitalWrite(sensorStatusPin, LOW);
     }
