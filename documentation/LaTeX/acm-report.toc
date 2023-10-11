@@ -1,0 +1,89 @@
+\contentsline {section}{\numberline {0.1}inleiding}{2}{}%
+\contentsline {chapter}{\numberline {1}Product specificaties}{3}{}%
+\contentsline {section}{\numberline {1.1}introductie}{3}{}%
+\contentsline {section}{\numberline {1.2}Productspecificaties}{3}{}%
+\contentsline {subsection}{\numberline {1.2.1}Functionele vereisten}{3}{}%
+\contentsline {subsection}{\numberline {1.2.2}Specificaties van het havengebied}{4}{}%
+\contentsline {subsection}{\numberline {1.2.3}Niet-functionele vereisten}{4}{}%
+\contentsline {section}{\numberline {1.3}Taken per vereiste}{4}{}%
+\contentsline {section}{\numberline {1.4}Uitgebreide takenlijst}{5}{}%
+\contentsline {section}{\numberline {1.5}Taken per vereiste}{6}{}%
+\contentsline {chapter}{\numberline {2}Testen}{10}{}%
+\contentsline {section}{\numberline {2.1}Testplan}{10}{}%
+\contentsline {subsection}{\numberline {2.1.1}De ACM rijdt op een accu}{10}{}%
+\contentsline {subsubsection}{Testdoel}{10}{}%
+\contentsline {subsubsection}{Testopstelling}{10}{}%
+\contentsline {subsubsection}{Benodigheden}{10}{}%
+\contentsline {subsubsection}{Uitvoer}{10}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{10}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{11}{}%
+\contentsline {subsection}{\numberline {2.1.2}De ACM rijdt binnen de lijnen van het rijvlak}{11}{}%
+\contentsline {subsubsection}{Testdoel}{11}{}%
+\contentsline {subsubsection}{Testopstelling}{11}{}%
+\contentsline {subsubsection}{Benodigheden}{11}{}%
+\contentsline {subsubsection}{Uitvoer}{11}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{11}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{11}{}%
+\contentsline {subsection}{\numberline {2.1.3}De ACM kan door een tunnel rijden.}{12}{}%
+\contentsline {subsubsection}{Testdoel}{12}{}%
+\contentsline {subsubsection}{Testopstelling}{12}{}%
+\contentsline {subsubsection}{Benodigheden}{12}{}%
+\contentsline {subsubsection}{Uitvoer}{12}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{12}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{12}{}%
+\contentsline {subsection}{\numberline {2.1.4}De ACM kan over heuvels rijden.}{12}{}%
+\contentsline {subsubsection}{Testdoel}{12}{}%
+\contentsline {subsubsection}{Testopstelling}{12}{}%
+\contentsline {subsubsection}{Benodigheden}{13}{}%
+\contentsline {subsubsection}{Uitvoer}{13}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{13}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{13}{}%
+\contentsline {subsection}{\numberline {2.1.5}De ACM kan obstakels ontwijken.}{13}{}%
+\contentsline {subsubsection}{Testdoel}{13}{}%
+\contentsline {subsubsection}{Testopstelling}{13}{}%
+\contentsline {subsubsection}{Benodigheden}{13}{}%
+\contentsline {subsubsection}{Uitvoer}{14}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{14}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{14}{}%
+\contentsline {subsection}{\numberline {2.1.6}De ACM kan na een val van maximaal 50 mm verder rijden.}{14}{}%
+\contentsline {subsubsection}{Testdoel}{14}{}%
+\contentsline {subsubsection}{Testopstelling}{14}{}%
+\contentsline {subsubsection}{Benodigheden}{14}{}%
+\contentsline {subsubsection}{Uitvoer}{14}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{15}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{15}{}%
+\contentsline {subsection}{\numberline {2.1.7}De ACM kan bij de kade(afgrond) keren.}{15}{}%
+\contentsline {subsubsection}{Testdoel}{15}{}%
+\contentsline {subsubsection}{Testopstelling}{15}{}%
+\contentsline {subsubsection}{Benodigheden}{15}{}%
+\contentsline {subsubsection}{Uitvoer}{15}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{15}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{15}{}%
+\contentsline {subsection}{\numberline {2.1.8}De ACM kan 2 containers van 60 bij 30 bij 30 mm vervoeren}{15}{}%
+\contentsline {subsubsection}{Testdoel}{15}{}%
+\contentsline {subsubsection}{Testopstelling}{16}{}%
+\contentsline {subsubsection}{Benodigheden}{16}{}%
+\contentsline {subsubsection}{Uitvoer}{16}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{16}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{16}{}%
+\contentsline {subsection}{\numberline {2.1.9}De ACM kan magnetische strepen herkennen.}{16}{}%
+\contentsline {subsubsection}{Testdoel}{16}{}%
+\contentsline {subsubsection}{Testopstelling}{17}{}%
+\contentsline {subsubsection}{Benodigheden}{17}{}%
+\contentsline {subsubsection}{Uitvoer}{17}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{17}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{17}{}%
+\contentsline {subsection}{\numberline {2.1.10}De ACM kan van punt A naar punt B in 5 minuten.}{17}{}%
+\contentsline {subsubsection}{Testdoel}{17}{}%
+\contentsline {subsubsection}{Testopstelling}{17}{}%
+\contentsline {subsubsection}{Benodigheden}{18}{}%
+\contentsline {subsubsection}{Uitvoer}{18}{}%
+\contentsline {subsubsection}{Verwachte resultaat}{18}{}%
+\contentsline {subsubsection}{Acceptatiecriteria}{18}{}%
+\contentsline {section}{\numberline {2.2}Testrapport}{19}{}%
+\contentsline {chapter}{\numberline {3}Design}{20}{}%
+\contentsline {section}{\numberline {3.1}Introductie}{20}{}%
+\contentsline {section}{\numberline {3.2}Iteraties}{20}{}%
+\contentsline {subsection}{\numberline {3.2.1}V1}{20}{}%
+\contentsline {chapter}{\numberline {4}Code}{21}{}%
+\contentsline {chapter}{\numberline {5}Reflectie}{22}{}%

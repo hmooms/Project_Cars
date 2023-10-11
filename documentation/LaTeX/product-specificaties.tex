@@ -1,0 +1,251 @@
+\section{introductie}
+\input{Product specificaties/introductie-requirements.tex}
+
+\section{Productspecificaties}
+\input{Product specificaties/product-specificaties.tex}
+
+
+\section{Taken per vereiste}
+De volgende tabel geeft de taken weer die moeten worden uitgevoerd om aan elke functionele en niet-functionele vereiste te voldoen:
+
+\begin{longtable}{@{}ll@{}}
+    \toprule
+    Vereistenummer & Taken                                                                               \\
+    \midrule
+    \endhead
+
+    1              & Ontwerp de ACM om door tunnels te rijden                                            \\
+    2              & Selecteer en integreer een geschikte accu                                           \\
+    3              & Implementeer heuvel-rijdende functionaliteit in de navigatie- en besturingssoftware \\
+    4              & Optimaliseer de ACM om containers snel naar hun bestemming te brengen               \\
+    5              & Versterk het chassis om een val van 50 mm te weerstaan                              \\
+    6              & Ontwikkel en implementeer lijnvolgalgoritmen in de navigatie- en besturingssoftware \\
+    7              & Integreer sensoren en ontwikkel algoritmen voor obstakeldetectie en -vermijding     \\
+    8              & Implementeer functionaliteit om bij de kade te keren                                \\
+    9              & Ontwerp een geschikt containervervoersysteem                                        \\
+    10             & Implementeer magnetische streepdetectie in de navigatie- en besturingssoftware      \\
+    11             & Implementeer autonome navigatie en besturing                                        \\
+    12             & Ontwikkel een interface voor het op afstand starten en stoppen van de ACM           \\
+    13             & Implementeer een interface voor het op afstand monitoren van sensoren               \\
+    14             & Implementeer containertransport tussen twee punten op het haventerrein              \\ [1ex]
+
+    NF1            & Integreer de ESP32 of ESP8266 in de controller                                      \\
+    NF2            & Gebruik alleen de aangeleverde libraries en apps                                    \\
+    NF3            & Implementeer de WiFi-verbinding voor communicatie met de ACM                        \\
+
+    \bottomrule
+    \caption{Taken per functionele (1-14) en niet-functionele (NF1-NF3) vereiste}
+    \label{tab:taken_per_vereiste}
+\end{longtable}
+
+
+\section{Uitgebreide takenlijst}
+De volgende uitgebreide takenlijst beschrijft de acties die moeten worden uitgevoerd om aan de vereisten te voldoen:
+
+\begin{longtable}{@{}ll@{}}
+    \toprule
+    Taaknummer & Beschrijving                                                                                       \\
+    \midrule
+    \endhead
+
+    1.1        & Ontwerp het chassis om de afmetingen van de tunnel en container te ondersteunen                    \\
+    1.2        & Voer structurele analyses uit om de stabiliteit en sterkte van het chassis te waarborgen           \\
+
+    2.1        & Onderzoek en selecteer de geschikte motor en accu                                                  \\
+    2.2        & Integreer de motor en accu in het ontwerp van de ACM                                               \\
+    2.3        & Test en valideer de prestaties van de motor en accu                                                \\
+
+    3.1        & Ontwikkel algoritmen voor het rijden over hellingen                                                \\
+    3.2        & Test en valideer het rijden over hellingen met de motor en accu                                    \\
+    3.3        & Optimaliseer de motor- en regelaarinstellingen voor het rijden over hellingen                      \\
+
+    4.1        & Analyseer het haventerrein en plan de optimale route                                               \\
+    4.2        & Optimaliseer de navigatie- en besturingssoftware om containers snel naar hun bestemming te brengen \\
+    4.3        & Valideer de prestaties van de ACM met betrekking tot de tijdslimiet                                \\
+
+    5.1        & Versterk het chassis en de kritische componenten                                                   \\
+    5.2        & Voer valtests uit om de robuustheid van de ACM te valideren                                        \\
+
+    6.1        & Integreer lijnvolgsensoren in het ontwerp van de ACM                                               \\
+    6.2        & Ontwikkel en test lijnvolgalgoritmen in de navigatie- en besturingssoftware                        \\
+
+    7.1        & Selecteer geschikte sensoren voor obstakeldetectie                                                 \\
+    7.2        & Integreer de sensoren in het ontwerp van de ACM                                                    \\
+    7.3        & Ontwikkel en test algoritmen voor obstakeldetectie en -vermijding                                  \\
+
+    8.1        & Ontwikkel en test algoritmen voor het keren bij de kade                                            \\
+    8.2        & Valideer de prestaties van de ACM bij het keren in realistische scenario's                         \\
+
+    9.1        & Ontwerp een transportsysteem                                                                       \\
+    9.2        & Integreer het trasportsysteem in het ontwerp van de ACM                                            \\
+    9.3        & Test en valideer de functionaliteit van het containervervoersysteem                                \\
+
+    10.1       & Integreer magnetische streepsensoren in het ontwerp van de ACM                                     \\
+    10.2       & Ontwikkel en test algoritmen voor magnetische streepdetectie                                       \\
+    10.3       & Valideer de nauwkeurigheid en betrouwbaarheid van de magnetische streepdetectie                    \\
+
+    11.1       & Implementeer algoritmen voor autonome navigatie en besturing                                       \\
+    11.2       & Test en valideer de autonome functionaliteit van de ACM                                            \\
+    11.3       & Optimaliseer de prestaties en betrouwbaarheid van de autonome functies                             \\
+
+    12.1       & Ontwikkel een interface voor het op afstand starten en stoppen van de ACM                          \\
+    12.2       & Test en valideer de betrouwbaarheid van de afstandsbediening                                       \\
+
+    13.1       & Implementeer een interface voor het op afstand monitoren van sensoren                              \\
+    13.2       & Test en valideer de functionaliteit en betrouwbaarheid van de sensorbewaking                       \\
+
+    14.1       & Implementeer containertransport tussen twee punten op het haventerrein                             \\
+    14.2       & Test en valideer de prestaties van de ACM bij het vervoeren van containers                         \\
+
+    NF1.1      & Integreer de ESP32 of ESP8266 in het ontwerp van de controller                                     \\
+    NF1.2      & Ontwikkel en test de firmware voor de controller                                                   \\
+
+    NF2.1      & Gebruik alleen de aangeleverde libraries en apps                                                   \\
+    NF2.2      & Pas de aangeleverde libraries en apps aan indien nodig                                             \\
+
+    NF3.1      & Implementeer de WiFi-verbinding voor communicatie met de ACM                                       \\
+    NF3.2      & Test en valideer de betrouwbaarheid en snelheid van de WiFi-verbinding                             \\
+
+    \bottomrule
+    \caption{Uitgebreide takenlijst voor de ontwikkeling van de Automatic Container Mover (ACM)}
+    \label{tab:uitgebreide_takenlijst}
+\end{longtable}
+
+
+\section{Taken per vereiste}
+De volgende tabel toont de taken die moeten worden uitgevoerd om aan elke functionele en niet-functionele vereiste te voldoen:
+
+\begin{longtable}{@{}p{4cm}p{2cm}p{3cm}p{5cm}@{}}
+    \toprule
+    Productspecificatie                                                                                    & Requirements & Situatie                      & Taken \\
+    \midrule
+    \endhead
+
+    ACM kan door een tunnel rijden                                                                         & 1            & Tunnel rijden                 &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Ontwerp het chassis om de afmetingen van de tunnel te ondersteunen
+        \item Voer structurele analyses uit
+    \end{enumerate}                                                                                       \\
+    \midrule
+    ACM moet op een accu rijden                                                                            & 2            & Energievoorziening            &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Onderzoek en selecteer de geschikte motor en accu
+        \item Integreer de motor en accu in het ontwerp van de ACM
+    \end{enumerate}                                                                                                     \\
+    \midrule
+
+    ACM kan over heuvels rijden                                                                            & 3            & Rijden over heuvels           &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Ontwikkel algoritmen voor het rijden over hellingen
+        \item Test en valideer het rijden over hellingen met de motor en accu
+    \end{enumerate}                                                                                          \\
+    \midrule
+
+    ACM kan binnen vijf minuten containers naar bestemming brengen                                         & 4            & Tijdslimiet                   &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Analyseer het haventerrein en plan de optimale route
+        \item Optimaliseer de navigatie- en besturingssoftware
+    \end{enumerate}                                                                                                     \\
+    \midrule
+
+    ACM kan na een val van maximaal 50 mm verder rijden                                                    & 5            & Valbestendigheid              &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Versterk het chassis en de kritische componenten
+        \item Voer valtests uit om de robuustheid te valideren
+    \end{enumerate}                                                                                                         \\
+    \midrule
+
+    ACM kan binnen de lijnen van het rijvlak rijden                                                        & 6            & Lijnvolgen                    &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Integreer lijnvolgsensoren in het ontwerp van de ACM
+        \item Ontwikkel en test lijnvolgalgoritmen in de navigatie- en besturingssoftware
+    \end{enumerate}                                                                              \\
+    \midrule
+
+    ACM kan obstakels ontwijken                                                                            & 7            & Obstakelvermijding            &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Selecteer geschikte sensoren voor obstakeldetectie
+        \item Integreer de sensoren in het ontwerp van de ACM
+        \item Ontwikkel en test algoritmenvoor obstakelvermijding \
+        \item Valideer de prestaties en betrouwbaarheid van de obstakelvermijdingsfunctie \
+    \end{enumerate}                                                                            \\
+    \midrule
+
+    ACM kan bij de kade (afgrond) keren                                                                    & 8            & Keren bij de kade             &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Integreer randdetectiesensoren in het ontwerp van de ACM
+        \item Ontwikkel en test algoritmen voor randdetectie en keren
+        \item Valideer de veiligheid en betrouwbaarheid van de keermanoeuvre bij de kade \
+    \end{enumerate}                                                                             \\
+    \midrule
+
+    ACM kan 2 containers van 60 bij 30 bij 30 mm vervoeren                                                 & 9            & Containervervoer              &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Ontwerp een mechanisme voor het vasthouden en vervoeren van containers
+        \item Test en valideer de functionaliteit van het containervervoersysteem \
+    \end{enumerate}                                                                                   \\
+    \midrule
+
+    ACM kan magnetische strepen op het terrein detecteren als herkenningspunten                            & 10           & Magnetische streepdetectie    &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Integreer magnetische streepsensoren in het ontwerp van de ACM
+        \item Ontwikkel en test algoritmen voor magnetische streepdetectie
+        \item Valideer de nauwkeurigheid en betrouwbaarheid van de magnetische streepdetectie \
+    \end{enumerate}                                                                        \\
+    \midrule
+
+    ACM kan zelfstandig (‘autonoom’) rijden                                                                & 11           & Autonoom rijden               &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Implementeer algoritmen voor autonome navigatie en besturing
+        \item Test en valideer de autonome functionaliteit van de ACM
+        \item Optimaliseer de prestaties en betrouwbaarheid van de autonome functies \
+    \end{enumerate}                                                                                 \\
+    \midrule
+
+    ACM kan vanaf afstand worden gestart of gestopt                                                        & 12           & Afstandsbediening             &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Ontwikkel een interface voor het op afstand starten en stoppen van de ACM
+        \item Test en valideer de betrouwbaarheid van de afstandsbediening \
+    \end{enumerate}                                                                                \\
+    \midrule
+
+    Operator kan de sensoren vanaf afstand monitoren                                                       & 13           & Sensorbewaking op afstand     &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Implementeer een interface voor het op afstand monitoren van sensoren
+        \item Test en valideer de functionaliteit en betrouwbaarheid van de sensorbewaking \
+    \end{enumerate}                                                                           \\
+    \midrule
+
+    ACM moet containers tussen 2 punten op het haventerrein vervoeren                                      & 14           & Containertransport op terrein &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Implementeer containertransport tussen twee punten op het haventerrein
+        \item Test en valideer de prestaties van de ACM bij het vervoeren van containers \
+    \end{enumerate}                                                                             \\
+    \midrule
+
+    Controller moet een ESP32 of ESP8266 bevatten                                                          & NF1          & Controller hardware           &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Integreer de ESP32 of ESP8266 in het ontwerp van de ACM
+        \item Ontwikkel en test software voor de geselecteerde microcontroller \
+    \end{enumerate}                                                                                       \\
+    \midrule
+
+    Software van een ACM mag geen gebruik maken van libraries of kant-en-klare apps anders dan aangeleverd & NF2          & Softwarebeperkingen           &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Ontwikkel alle benodigde functionaliteit met de toegestane libraries en apps
+        \item Test en valideer de prestaties en betrouwbaarheid van de ACM met de beperkte software \
+    \end{enumerate}                                                                  \\
+    \midrule
+
+    De verbinding met de ACM gaat via WIFI                                                                 & NF3          & Draadloze communicatie        &
+    \begin{enumerate}[nosep, leftmargin=*]
+        \item Integreer WIFI-functionaliteit in het ontwerp van de ACM
+        \item Ontwikkel en test software voor WIFI-communicatie
+        \item Valideer de betrouwbaarheid en prestaties van de draadloze communicatie \
+    \end{enumerate}                                                                                \\
+
+    \bottomrule
+    \caption{Taken per functionele en niet-functionele vereiste}
+    \label{tab:taken_per_vereiste1}
+\end{longtable}
+
